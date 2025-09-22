@@ -1,0 +1,12 @@
+
+services:
+  - type: web
+    name: ventassccrn
+    env: static
+    buildCommand: echo "No build command needed"
+    startCommand: echo "Starting static server"
+    staticPublishPath: .
+    repo: https://github.com/hfigueroa2018/ventassccrn
+    envVars:
+      - key: NODE_VERSION
+        value: '18.17.0'
