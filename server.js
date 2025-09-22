@@ -172,6 +172,28 @@ const server = http.createServer(async (req, res) => {
         filePath = lowerCasePath;
       }
     }
+
+    // Si todavía no existe, intentar con el nombre completo en mayúsculas
+    if (!fs.existsSync(filePath)) {
+      const dir = parsedPath.dir;
+      const fileName = parsedPath.name.toUpperCase();
+      const ext = parsedPath.ext.toUpperCase();
+      const upperCasePath = path.join(dir, fileName + ext);
+      if (fs.existsSync(upperCasePath)) {
+        filePath = upperCasePath;
+      }
+    }
+
+    // Si todavía no existe, intentar con la primera letra en mayúscula
+    if (!fs.existsSync(filePath)) {
+      const dir = parsedPath.dir;
+      const fileName = parsedPath.name.charAt(0).toUpperCase() + parsedPath.name.slice(1).toLowerCase();
+      const ext = parsedPath.ext.charAt(0).toUpperCase() + parsedPath.ext.slice(1).toLowerCase();
+      const titleCasePath = path.join(dir, fileName + ext);
+      if (fs.existsSync(titleCasePath)) {
+        filePath = titleCasePath;
+      }
+    }
   }
 
   // Obtener la extensión del archivo
