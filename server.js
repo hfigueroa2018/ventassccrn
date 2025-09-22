@@ -161,6 +161,17 @@ const server = http.createServer(async (req, res) => {
         filePath = lowerExtPath;
       }
     }
+
+    // Si todavía no existe, intentar con el nombre completo en minúsculas
+    if (!fs.existsSync(filePath)) {
+      const dir = parsedPath.dir;
+      const fileName = parsedPath.name.toLowerCase();
+      const ext = parsedPath.ext.toLowerCase();
+      const lowerCasePath = path.join(dir, fileName + ext);
+      if (fs.existsSync(lowerCasePath)) {
+        filePath = lowerCasePath;
+      }
+    }
   }
 
   // Obtener la extensión del archivo
