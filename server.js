@@ -2,10 +2,27 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const url = require('url');
 
 const PORT = process.env.PORT || 3000;
 
+// Función para verificar si el usuario está autenticado
+function isAuthenticated(req) {
+  // En una aplicación real, aquí verificarías cookies, tokens de sesión, etc.
+  // Por ahora, simplemente verificaremos si la URL contiene un parámetro de autenticación
+  const queryObject = url.parse(req.url, true).query;
+  return queryObject.auth === 'true';
+}
+
 const server = http.createServer((req, res) => {
+  // Redirigir a login si no está autenticado y no está ya en la página de login
+  if (req.url === '/' || req.url === '/index.html') {
+    if (!isAuthenticated(req)) {
+      res.writeHead(302, { 'Location': '/login.html' });
+      return res.end();
+    }
+  }
+
   // Construir la ruta del archivo solicitado
   let filePath = path.join(__dirname, req.url === '/' ? 'index.html' : req.url);
 
