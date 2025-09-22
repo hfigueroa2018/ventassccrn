@@ -9,8 +9,20 @@ const server = http.createServer((req, res) => {
   // Construir la ruta del archivo solicitado
   let filePath = path.join(__dirname, req.url === '/' ? 'index.html' : req.url);
 
+  // Manejar rutas con mayúsculas/minúsculas en sistemas sensibles a mayúsculas
+  if (!fs.existsSync(filePath)) {
+    // Intentar convertir a minúsculas la extensión
+    const parsedPath = path.parse(filePath);
+    if (parsedPath.ext) {
+      const lowerExtPath = path.join(parsedPath.dir, parsedPath.name + parsedPath.ext.toLowerCase());
+      if (fs.existsSync(lowerExtPath)) {
+        filePath = lowerExtPath;
+      }
+    }
+  }
+
   // Obtener la extensión del archivo
-  const extname = path.extname(filePath);
+  const extname = path.extname(filePath).toLowerCase();
 
   // Establecer el tipo de contenido por defecto
   let contentType = 'text/html';
