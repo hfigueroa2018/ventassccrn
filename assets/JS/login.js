@@ -16,7 +16,29 @@ const   $submit = document.getElementById("submit"),
             if(e.target === $submit){
                 if($password.value !== "" && $username.value !== ""){
                         e.preventDefault();
-                        window.location.href = "index.html";
+
+                        // Crear un objeto FormData con las credenciales
+                        const formData = new FormData();
+                        formData.append('username', $username.value);
+                        formData.append('password', $password.value);
+
+                        // Enviar las credenciales al servidor
+                        fetch('/login', {
+                            method: 'POST',
+                            body: formData
+                        })
+                        .then(response => {
+                            if (response.redirected) {
+                                window.location.href = response.url;
+                            } else {
+                                // Mostrar mensaje de error
+                                alert('Usuario o contraseña incorrectos');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error en el login:', error);
+                            alert('Error al intentar iniciar sesión');
+                        });
                 }
             }
         })

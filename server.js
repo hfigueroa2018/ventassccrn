@@ -1,23 +1,114 @@
-
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const url = require('url');
+const { Pool } = require('pg');
+const bcrypt = require('bcrypt');
 
 const PORT = process.env.PORT || 3000;
 
-// Función para verificar si el usuario está autenticado
-function isAuthenticated(req) {
-  // En una aplicación real, aquí verificarías cookies, tokens de sesión, etc.
-  // Por ahora, simplemente verificaremos si la URL contiene un parámetro de autenticación
-  const queryObject = url.parse(req.url, true).query;
-  return queryObject.auth === 'true';
+// Configuración de la conexión a PostgreSQL
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL || 'postgresql://localhost:5432/ventassccrn',
+  ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false
+});
+
+// Crear tabla de usuarios si no existe
+async function initializeDatabase() {
+  try {
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS users (
+        id SERIAL PRIMARY KEY,
+        username VARCHAR(50) UNIQUE NOT NULL,
+        password VARCHAR(100) NOT NULL
+      )
+    `);
+
+    // Verificar si existe el usuario admin, si no existe, crearlo
+    const adminExists = await pool.query('SELECT * FROM users WHERE username = $1', ['admin']);
+
+    if (adminExists.rows.length === 0) {
+      // Hash de la contraseña "admin123"
+      const hashedPassword = await bcrypt.hash('admin123', 10);
+      await pool.query('INSERT INTO users (username, password) VALUES ($1, $2)', ['admin', hashedPassword]);
+      console.log('Usuario admin creado con contraseña: admin123');
+    }
+  } catch (err) {
+    console.error('Error al inicializar la base de datos:', err);
+  }
 }
 
-const server = http.createServer((req, res) => {
+// Función para verificar si el usuario está autenticado
+async function isAuthenticated(req) {
+  const queryObject = url.parse(req.url, true).query;
+
+  // Si tiene el parámetro auth=true, verificar si existe una sesión válida
+  if (queryObject.auth === 'true') {
+    // En una aplicación real, aquí verificarías una sesión o token válido
+    // Por ahora, simplemente retornaremos true si el parámetro está presente
+    return true;
+  }
+
+  return false;
+}
+
+// Función para validar las credenciales del usuario
+async function validateCredentials(username, password) {
+  try {
+    const result = await pool.query('SELECT * FROM users WHERE username = $1', [username]);
+
+    if (result.rows.length === 0) {
+      return false; // Usuario no encontrado
+    }
+
+    const user = result.rows[0];
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    return isPasswordValid;
+  } catch (err) {
+    console.error('Error al validar credenciales:', err);
+    return false;
+  }
+}
+
+// Crear el servidor
+const server = http.createServer(async (req, res) => {
+  // Manejar solicitud de login
+  if (req.url === '/login' && req.method === 'POST') {
+    let body = '';
+
+    req.on('data', chunk => {
+      body += chunk.toString();
+    });
+
+    req.on('end', async () => {
+      try {
+        const params = new URLSearchParams(body);
+        const username = params.get('username');
+        const password = params.get('password');
+
+        const isValid = await validateCredentials(username, password);
+
+        if (isValid) {
+          res.writeHead(302, { 'Location': '/index.html?auth=true' });
+        } else {
+          res.writeHead(302, { 'Location': '/login.html?error=1' });
+        }
+
+        res.end();
+      } catch (err) {
+        console.error('Error en el login:', err);
+        res.writeHead(500, { 'Content-Type': 'text/html' });
+        res.end('<h1>Error interno del servidor</h1>');
+      }
+    });
+
+    return;
+  }
+
   // Redirigir a login si no está autenticado y no está ya en la página de login
   if ((req.url === '/' || req.url === '/index.html') && !req.url.includes('auth=true')) {
-    if (!isAuthenticated(req)) {
+    if (!(await isAuthenticated(req))) {
       res.writeHead(302, { 'Location': '/login.html' });
       return res.end();
     }
@@ -91,6 +182,12 @@ const server = http.createServer((req, res) => {
   });
 });
 
-server.listen(PORT, () => {
-  console.log(`Servidor corriendo en el puerto ${PORT}`);
+// Inicializar la base de datos y luego iniciar el servidor
+initializeDatabase().then(() => {
+  server.listen(PORT, () => {
+    console.log(`Servidor corriendo en el puerto ${PORT}`);
+  });
+}).catch(err => {
+  console.error('Error al iniciar el servidor:', err);
 });
+
