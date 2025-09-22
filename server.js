@@ -16,7 +16,7 @@ function isAuthenticated(req) {
 
 const server = http.createServer((req, res) => {
   // Redirigir a login si no está autenticado y no está ya en la página de login
-  if (req.url === '/' || req.url === '/index.html') {
+  if ((req.url === '/' || req.url === '/index.html') && !req.url.includes('auth=true')) {
     if (!isAuthenticated(req)) {
       res.writeHead(302, { 'Location': '/login.html' });
       return res.end();
