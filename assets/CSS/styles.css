@@ -1,0 +1,695 @@
+/* Hamburguesa */
+
+.hamburger.open span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+  }
+  
+  .hamburger.open span:nth-child(2) {
+    opacity: 0;
+  }
+  
+  .hamburger.open span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+  }
+  
+
+
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+/* Navbar base */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #BC8648;
+    padding: 0.5em 1em;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    
+  }
+  
+  .navbar .logo a {
+    text-decoration: none;
+    color: #ecf0f1;
+    font-size: 1.5em;
+    font-weight: bold;
+  }
+  
+  .nav-links {
+    display: flex;
+    list-style: none;
+    gap: 1em;
+  }
+  
+  .nav-links a {
+    text-decoration: none;
+    color: #ecf0f1;
+    font-size: 1.1em;
+    transition: color 0.3s ease;
+  }
+  
+  .nav-links a:hover {
+    color: #3498db;
+  }
+  
+  /* Hamburger menu */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    gap: 0.3em;
+  }
+  
+  .hamburger span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: #ecf0f1;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .nav-links {
+      display: none;
+      flex-direction: column;
+      background-color: #34495e;
+      position: absolute;
+      top: 60px;
+      right: 0;
+      width: 200px;
+      border-radius: 5px;
+    }
+  
+    .nav-links.show {
+      display: flex;
+    }
+  
+    .hamburger {
+      display: flex;
+    }
+  }
+  
+
+
+.contenedor {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+}
+
+.contenedor img{
+    display: block;
+    margin: 0 auto;
+    height: 200px;
+    width: 200px;
+}
+
+.desgloseVentas img{
+    width: 50px;
+    height: 50px;
+}
+
+
+
+/* Estilos para el historial de ventas */
+#historialVentas {
+    margin-top: 20px;
+}
+
+#historialVentas table {
+    width: 100%;
+    border-collapse: collapse;
+    
+}
+
+#historialVentas th, #historialVentas td {
+   border: 1px solid #DCDCDC;
+   padding: 8px; /* Asegúrate de que el padding sea el mismo en todas las celdas */
+   text-align: left;
+   
+}
+
+td[data-label="Acciones"] {
+   display: flex;
+   gap: 10px;
+   justify-content: center;
+   align-items: center;
+   border: 1px solid #ddd; /* Asegúrate de que el borde sea igual al resto de celdas */
+   padding: 8px; /* Igual que el padding de otras celdas */
+}
+
+/* Este es el color del encabezado del historial de venta */
+#historialVentas th {
+    background-color: #8FBC8F;
+}
+
+/* Estilo para productos anulados */
+.producto-anulado {
+    color: red;
+    text-decoration: line-through;
+}
+
+/* Estilos para el medio de pago */
+.medioPago {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.medioPago label {
+    margin-right: 10px;
+}
+
+.medioPago input {
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+/* Estilo adicional para el desglose de ventas */
+
+
+.desgloseVentas {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #CCCCCC;
+    border: 3px solid #CCCC99;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.desgloseVentas h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.desgloseVentas p {
+    font-size: 18px;
+    margin: 5px 0;
+}
+
+.desgloseVentas span {
+    font-weight: bold;
+}
+
+#fcontenedorProductos{
+    background-color: #FFFFFF;
+    border: 1px solid #CCCC99;
+}
+
+/* Ocultar desglose de ventas al imprimir */
+@media print {
+    #desgloseVentas {
+        display: none;
+    }
+}
+
+/* **************Estilos para los botones ***********************/
+.btn {
+    background-color: red;
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background-color: #95a5a6;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    font-size: 16px;
+    margin-top: 20px;
+    border-radius: 8px;
+    transition: all 0.4s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn:hover {
+    background-color: #BC8648	;
+    border: 1px solid #CCCC99;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.btnEliminar {
+    background-color: #c0392b;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    margin-left: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.4s ease;
+}
+
+.btnEliminar:hover {
+    
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* ***********Contenedor de acciones para alinear los botones */
+td[data-label="Acciones"] {
+    display: flex;
+    gap: 10px;       /* espacio entre botones */
+    justify-content: center; /* centrar horizontalmente */
+    align-items: center;
+}
+
+/* Estilos base para los botones de acción */
+.btnAccion {
+    border-radius: 50%;
+    color: #fff;
+    border: none;
+    padding: 12px;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Hover general para ambos botones */
+.btnAccion:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Específico para Anular */
+.btnAccion.anular {
+    background-color: #c0392b;  /* rojo */
+    animation: none; /* quitar pulsar inicial */
+}
+
+.btnAccion.anular:hover {
+    animation: pulse 1s infinite;
+}
+
+/* Específico para Editar */
+.btnAccion.editar {
+    background-color: #3498db;  /* azul */
+}
+
+
+#exportar-btn{
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+    padding: 0;
+    width: 40px;
+    height: 40px;
+    transition: transform 1s ease,filter 1s ease;
+}
+
+#exportar-btn:hover{
+    transform: scale(1.3,1.3);
+    filter: drop-shadow(0 0 8px rgba(0, 123, 255, 0.7));
+   
+} 
+
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+
+
+
+
+
+/* Ocultar botones al imprimir */
+@media print {
+    .btn {
+        display: none;
+    }
+    .no-imprimir {
+        display: none;
+    }
+    .imprimir {
+        display: block;
+    }
+}
+
+.imprimir {
+    display: none;
+}
+
+/* Estilos para hacer que el historial de ventas sea responsivo */
+@media (max-width: 768px) {
+    #historialVentas table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+    #historialVentas th, #historialVentas td {
+        display: block;
+        text-align: right;
+    }
+    #historialVentas th {
+        background-color: #f9f9f9;
+    }
+    #historialVentas td {
+        border-top: 1px solid #ddd;
+        padding: 10px 5px;
+    }
+    #historialVentas td::before {
+        content: attr(data-label);
+        display: block;
+        font-weight: bold;
+        text-transform: uppercase;
+        margin-bottom: 5px;
+    }
+}
+
+/* Estilos para pantallas pequeñas */
+@media (max-width: 480px) {
+    .medioPago {
+        flex-direction: column;
+    }
+
+    .medioPago label {
+        margin-bottom: 5px;
+    }
+
+    .medioPago input,
+    .medioPago select {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .btn {
+        padding: 10px;
+        
+    }
+
+    .btnAnular {
+        width: 40px;
+        height: 40px;
+        padding: 8px;
+        font-size: 12px;
+    }
+}
+
+/* Estilos específicos para impresión */
+@media print {
+  body {
+    font-size: 20px; /* Aumenta tamaño general del texto */
+    line-height: 1.6;
+    font-weight: bold; /* Hace todo el texto en negrita */
+  }
+
+ #ticketImpreso {
+    font-size: 24px; /* Texto del ticket más grande */
+    font-weight: bold; /* Negrita para el ticket */
+  }
+
+ 
+  #ticketImpreso h3, 
+  #ticketImpreso p {
+    font-size: 28px; /* Títulos más grandes */
+    margin-bottom: 10px;
+    font-weight: bold; /* Negrita para los títulos */
+  }
+  #ticketImpreso p, 
+  #ticketImpreso li {
+    font-size: 25px; /* Detalles más grandes */
+    font: bold;
+  }
+
+  #ticketImpreso u {
+    font-size: 24px; /* Aumentar el tamaño de la palabra "Detalle" */
+    font-weight: bold; /* Negrita para la palabra Detalle */
+  }
+    /* Detalle de la venta (productos) en 30px */
+  #ticketImpreso ul {
+    font-size: 30px; /* Aumentar solo el detalle de la venta a 30px */
+    font-weight: normal; /* Mantener en peso normal si no se quiere en negrita */
+  }
+
+  
+  #ticketImpreso img {
+    width: 100px !important;  /* Imagen/logo más pequeño */
+    height: auto !important;
+  }
+
+  /* Ocultar elementos que no quieres imprimir */
+  .no-imprimir, header, nav, .navbar {
+    display: none !important;
+  }
+
+  /* Ticket ocupa todo el ancho del papel */
+  #ticketImpreso {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+
+td[rowspan] {
+  vertical-align: middle;
+}
+
+
+
+/***/******* Estilos para el modal de edicion */
+.editarTicketForm {
+  position: fixed;             /* Fija la posición */
+  top: 50%;                    /* Centro vertical */
+  left: 50%;                   /* Centro horizontal */
+  transform: translate(-50%, -50%);  /* Ajusta para el verdadero centro */
+  background-color: #fff;
+  padding: 25px 30px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  z-index: 1001;
+  width: 350px;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  animation: fadeIn 0.5s ease-out;
+  font-family: 'Poppins', sans-serif;
+  box-sizing: border-box;
+  border: 1px solid #ddd;
+  background: linear-gradient(to right, #ffffff, #f9f9f9);
+  margin: 0;
+  /* Garantizamos que se centre independientemente de otros estilos */
+}
+
+/* Fondo oscuro fuera del modal (overlay) */
+.editarTicketForm:before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7); /* Oscurece el fondo */
+  z-index: -1;
+  backdrop-filter: blur(5px); /* Desenfoque de fondo */
+}
+
+
+
+/* Animación de entrada */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -60%);  /* Ajuste inicial fuera de la pantalla */
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%);  /* Movimiento hacia el centro */
+  }
+}
+/* Título del modal */
+.editarTicketForm h4 {
+  font-size: 1.6em;
+  font-weight: 600;
+  color: #2c3e50;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+/* Estilo para las etiquetas */
+.editarTicketForm label {
+  font-size: 1.1em;
+  color: #34495e;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+/* Estilos para los selects */
+.editarTicketForm select {
+  padding: 12px 18px;
+  font-size: 1em;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  background-color: #f5f5f5;
+  box-sizing: border-box;
+  transition: border-color 0.3s, background-color 0.3s ease;
+  outline: none;
+}
+
+.editarTicketForm select:focus {
+  border-color: #3498db;
+  background-color: #e6f0f7;
+  box-shadow: 0 0 10px rgba(52, 152, 219, 0.3);
+}
+
+/* Estilos de los botones */
+.editarTicketForm button {
+  padding: 12px;
+  font-size: 1.1em;
+  border-radius: 8px;
+  border: none;
+  background-color: #3498db;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  margin-top: 10px;
+  display: block;
+  width: 100%;
+}
+
+/* Hover para el botón de guardar */
+.editarTicketForm button:hover {
+  background-color: #2980b9;
+  transform: translateY(-3px);
+}
+
+/* Active (clic) para el botón de guardar */
+.editarTicketForm button:active {
+  background-color: #1c6180;
+  transform: translateY(1px);
+}
+
+/* Botón de cancelar */
+.editarTicketForm button#cancelarEdicion {
+  background-color: #e74c3c;
+}
+
+.editarTicketForm button#cancelarEdicion:hover {
+  background-color: #c0392b;
+}
+
+/* Fondo oscuro fuera del modal (overlay) */
+.editarTicketForm:before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: -1;
+}
+
+/* Botón de cancelar con un estilo más destacado */
+.editarTicketForm button#cancelarEdicion {
+  background-color: #e74c3c;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.editarTicketForm button#cancelarEdicion:hover {
+  background-color: #c0392b;
+  transform: translateY(-3px);
+}
+
+/* Estilos generales de los botones (usados en todo el modal) */
+.editarTicketForm button {
+  padding: 12px;
+  font-size: 1.1em;
+  border-radius: 8px;
+  border: none;
+  background-color: #3498db;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+  margin-top: 10px;
+  width: 100%;
+}
+
+/* Fondo con desenfoque */
+.editarTicketForm:before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(5px);
+  z-index: -1;
+}
+
+/* Estilos adicionales de interacción */
+.editarTicketForm button:disabled {
+  background-color: #b0c4de;
+  cursor: not-allowed;
+}
+
+/* Responsivo */
+@media (max-width: 600px) {
+  .editarTicketForm {
+    width: 90%;
+    padding: 20px;
+  }
+
+  .editarTicketForm h4 {
+    font-size: 1.4em;
+  }
+
+  .editarTicketForm button {
+    font-size: 1em;
+  }
+}
+
+/* Ocultar inventario y otras secciones al imprimir */
+@media print {
+  /* Ocultar el inventario (tabla de stock) */
+  #tablaStock {
+    display: none !important;
+  }
+
+  /* Ocultar el historial de ventas */
+  #historialVentas {
+    display: none !important;
+  }
+
+  /* Ocultar otros elementos innecesarios en la impresión */
+  .no-imprimir, header, nav, .navbar, .desgloseVentas {
+    display: none !important;
+  }
+
+  /* Asegurar que solo el ticket se imprima */
+  #ticketImpreso {
+    display: block !important;
+    width: 100%;
+    text-align: center;
+  }
+}
