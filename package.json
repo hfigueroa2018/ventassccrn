@@ -3,7 +3,7 @@
   "name": "ventassccrn",
   "version": "1.0.0",
   "description": "Sistema de ventas para Gran Peña CCRN 2025",
-  "main": "index.html",
+  "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
@@ -14,7 +14,5 @@
   ],
   "author": "hfigueroa2018",
   "license": "MIT",
-  "dependencies": {
-    "http-server": "^14.1.1"
-  }
+  "dependencies": {}
 }
