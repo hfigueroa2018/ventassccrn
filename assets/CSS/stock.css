@@ -1,0 +1,72 @@
+/* Estilos para la tabla de stock */
+.tablaStock {
+  width: 70%;
+  margin: 20px auto;
+  border-collapse: collapse;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo de las celdas de la tabla */
+.tablaStock th, td {
+  padding: 12px;
+  text-align: justify;
+  font-size: 10px;
+  border-bottom: 1px solid #ddd;
+  background-color: #fff;
+  transition: background-color 0.3s ease;
+}
+
+/* Estilo de la cabecera de la tabla */
+.tablaStock th {
+  background-color: #BC8648;
+  color: white;
+  font-weight: bold;
+}
+
+/* Hover en las filas de la tabla */
+.tablaStock tr:hover {
+  background-color: #f9f9f9;
+}
+
+/* Estilos para las celdas de stock */
+.tablaStock td:nth-child(2), td:nth-child(3), td:nth-child(4) {
+  font-weight: 500;
+  color: #2ecc71;  /* Verde para el stock inicial */
+  padding: 10px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  background-color: #f2fdf2; /* Fondo verde claro */
+}
+
+/* Resaltar unidades vendidas y stock actual con colores suaves */
+.tablaStock td:nth-child(3) {
+  color: #e67e22; /* Naranja para unidades vendidas */
+  background-color: #fef3e1; /* Fondo suave */
+  font-weight: bold;
+}
+
+.tablaStock td:nth-child(4) {
+  color: #e74c3c; /* Rojo para el stock actual */
+  background-color: #fce6e6; /* Fondo suave */
+  font-weight: bold;
+}
+
+/* Efecto hover sobre celdas individuales */
+.tablaStock td:hover {
+  background-color: #e1f7f1; /* Fondo suave cuando pasa el mouse */
+  transform: scale(1.05); /* Efecto de ampliación al pasar el mouse */
+}
+
+/* Estilo responsivo para pantallas pequeñas */
+@media (max-width: 768px) {
+  .tablaStock th, td {
+    font-size: 0.9rem;
+    padding: 8px;
+  }
+
+  table {
+    width: 90%;
+  }
+}

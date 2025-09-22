@@ -1,0 +1,37 @@
+
+    /* Clases para las celdas de cada columna */
+    .stock-inicial {
+      font-weight: 500;
+      color: #2ecc71; /* Verde para el stock inicial */
+      background-color: #f2fdf2; /* Fondo verde claro */
+    }
+
+    .unidades-vendidas {
+      font-weight: bold;
+      color: #e67e22; /* Naranja para unidades vendidas */
+      background-color: #fef3e1; /* Fondo suave */
+    }
+
+    .stock-actual {
+      font-weight: bold;
+      color: #e74c3c; /* Rojo para el stock actual */
+      background-color: #fce6e6; /* Fondo suave */
+    }
+
+    /* Efecto hover sobre celdas individuales */
+    td:hover {
+      background-color: #e1f7f1; /* Fondo suave cuando pasa el mouse */
+      transform: scale(1.05); /* Efecto de ampliación al pasar el mouse */
+    }
+
+    /* Estilo responsivo para pantallas pequeñas */
+    @media (max-width: 768px) {
+      th, td {
+        font-size: 0.9rem;
+        padding: 8px;
+      }
+
+      table {
+        width: 90%;
+      }
+    }

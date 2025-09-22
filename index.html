@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GRAN PEÑA CCRN 2025</title>
+  <link rel="stylesheet" href="assets/CSS/styles.CSS">
+  <link rel="stylesheet" href="assets/CSS/stock.css">
+  <style>
+   
+    .medioPago {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .medioPago label {
+      margin-right: 10px;
+    }
+    .medioPago input {
+      padding: 5px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    
+    <nav class="navbar">
+      <div class="logo">
+        <a href="#"><img src="assets/IMG/logo.png" alt="" height="50px" width="50px"></a>
+      </div>
+      <ul class="nav-links">
+        <li><a href="#ventas">Ventas</a></li>
+        <li><a href="#registro">Registro</a></li>
+        <li><a href="#historial">Historial</a></li>
+        <li><a href="login.html">Cerrar Sesión</a></li>
+        
+      </ul>
+      <div class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </nav>
+  </header>
+  
+  <div class="contenedor">
+
+
+    <section id="ventas">
+   <img src="assets/IMG/18.png" alt="café" height="150px" width="150px">  
+   <h1>GRAN PEÑA CCRN 2025</h1>
+
+    <!-- Sección de desglose de ventas -->
+    <div class="desgloseVentas no-imprimir" id="desgloseVentas">
+      <h2><img src="assets/IMG/detalle.png" alt="detalle" height="50px" width="50px"> Desglose de Ventas</h2>
+      <p>Total Efectivo: $<span id="ventasEfectivo">0.00</span></p>
+      <p>Total Transferencias: $<span id="ventasTransferencia">0.00</span></p>
+      <p>Total Transbank: $<span id="ventasTransbank">0.00</span></p>
+      <p>ventas Totales: $<span id="totalVentas">0.00</span></p>
+      <img src="assets/IMG/exportar.png" alt="" id="exportar-btn">
+    </div>
+  </section>
+
+    
+
+<!-- Tabla de Stock de Productos -->
+    <h1 style="text-align: center;">Stock de Productos</h1>
+    <table id="tablaStock" class="tablaStock">
+      <thead>
+        <tr>
+          <th class="thStock">Producto</th>
+          <th class="thStock">Stock Inicial</th>
+          <th class="thStock">Unidades Vendidas</th>
+          <th class="thStock">Stock Actual</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Aquí se insertarán los datos dinámicamente -->
+      </tbody>
+    </table>
+
+    <!-- Formulario para ticket -->
+    
+<section id="registro">
+
+    <form id="formularioTicket" class="no-imprimir">
+      <div id="contenedorProductos"></div>
+      <button type="button" class="btn" id="agregarProducto">Añadir Producto</button><br>
+      <h2>Registro Cliente</h2>
+      <div class="totalCompra">Total de la Compra: $<span id="montoTotal">0</span></div><br>
+      <div class="numeroTicket">Número de Ticket: <span id="numeroTicket">1</span></div><br>
+      
+      
+
+
+
+      <!-- Medio de pago y nombre del cliente -->
+       
+      <div class="medioPago">
+        <label for="nombreCliente">Nombre del Cliente:</label>
+        <input type="text" id="nombreCliente" placeholder="Ingrese el nombre">
+        
+        <label for="selectMedioPago">Medio de Pago:</label>
+        <select id="selectMedioPago">
+          <option value="efectivo">Efectivo</option>
+          <option value="transferencia">Transferencia Bancaria</option>
+          <option value="transbank">Transbank / Débito</option>
+        </select>
+
+        <label for="selectestado">Estado:</label>
+        <select id="selectestado">
+          <option value="pagado">Pagado</option>
+          <option value="pendiente">Pendiente</option>
+          
+          
+        </select>
+      </div>
+      
+      <button type="submit" class="btn" id="generarTicketBtn" disabled>Generar Ticket</button>
+    </form>
+  </section>
+
+
+    <!-- Sección para mostrar el ticket impreso -->
+    <div id="ticketImpreso" class="imprimir" style="display: none;">
+      <h2>Detalle del Ticket</h2>
+      <div id="detalleVenta"></div>
+    </div>
+   
+
+
+
+
+    
+
+    <!-- Sección para mostrar el historial de ventas -->
+     
+     <section id="historial">
+    <div id="historialVentas" class="no-imprimir">
+      <h2>Historial de Ventas</h2>
+      <table>
+        <thead>
+          <tr >
+            <th >N° Ticket</th>
+            <th >Nombre Cliente</th>
+            <th >Productos</th>
+            <th >Categoría</th>
+            <th >Medio Pago</th>
+            <th >Total</th>
+            <th >Estado</th>
+            <th >Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="cuerpoHistorial">
+          <!-- Las filas se agregarán dinámicamente aquí -->
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  
+  
+
+  
+     </div>
+  
+
+  <script src="assets/JS/Scripts3.js"></script>
+  <script src="assets/JS/stock2.js"></script>
+
+</body>
+</html>
+
