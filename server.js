@@ -44,14 +44,14 @@ async function initializeDatabase() {
       )
     `);
 
-    // Verificar si existe el usuario admin, si no existe, crearlo
-    const adminExists = await pool.query('SELECT * FROM users WHERE username = $1', ['admin']);
+    // Verificar si existe el usuario Admin, si no existe, crearlo
+    const adminExists = await pool.query('SELECT * FROM users WHERE username = $1', ['Admin']);
 
     if (adminExists.rows.length === 0) {
-      // Hash de la contraseña "admin123"
-      const hashedPassword = await bcrypt.hash('admin123', 10);
-      await pool.query('INSERT INTO users (username, password) VALUES ($1, $2)', ['admin', hashedPassword]);
-      console.log('Usuario admin creado con contraseña: admin123');
+      // Hash de la contraseña "passw4rd2025"
+      const hashedPassword = await bcrypt.hash('passw4rd2025', 10);
+      await pool.query('INSERT INTO users (username, password) VALUES ($1, $2)', ['Admin', hashedPassword]);
+      console.log('Usuario Admin creado con contraseña: passw4rd2025');
     }
   } catch (err) {
     console.error('Error al inicializar la base de datos:', err);
@@ -82,7 +82,7 @@ async function validateCredentials(username, password) {
   // Si no hay módulos de base de datos, usar autenticación simple
   if (!pool || !bcrypt) {
     console.log('Validación sin base de datos');
-    return username === 'admin' && password === 'admin123';
+    return username === 'Admin' && password === 'passw4rd2025';
   }
 
   try {
