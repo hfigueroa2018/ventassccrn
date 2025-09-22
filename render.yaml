@@ -22,4 +22,3 @@ databases:
     databaseName: ventassccrn
     user: ventassccrn_user
     plan: free
-

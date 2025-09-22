@@ -61,9 +61,14 @@ async function initializeDatabase() {
 // Función para verificar si el usuario está autenticado
 async function isAuthenticated(req) {
   const queryObject = url.parse(req.url, true).query;
+  const cookies = req.headers.cookie ? req.headers.cookie.split(';').reduce((acc, cookie) => {
+    const [name, value] = cookie.trim().split('=');
+    acc[name] = value;
+    return acc;
+  }, {}) : {};
 
-  // Si tiene el parámetro auth=true, verificar si existe una sesión válida
-  if (queryObject.auth === 'true') {
+  // Si tiene el parámetro auth=true o una cookie de sesión, verificar si existe una sesión válida
+  if (queryObject.auth === 'true' || cookies.session === 'valid') {
     // En una aplicación real, aquí verificarías una sesión o token válido
     // Por ahora, simplemente retornaremos true si el parámetro está presente
     return true;
@@ -116,7 +121,10 @@ const server = http.createServer(async (req, res) => {
         const isValid = await validateCredentials(username, password);
 
         if (isValid) {
-          res.writeHead(302, { 'Location': '/index.html?auth=true' });
+          res.writeHead(302, { 
+            'Location': '/index.html',
+            'Set-Cookie': 'session=valid; Max-Age=3600; HttpOnly; Path=/'
+          });
         } else {
           res.writeHead(302, { 'Location': '/login.html?error=1' });
         }

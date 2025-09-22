@@ -28,8 +28,9 @@ const   $submit = document.getElementById("submit"),
                             body: formData
                         })
                         .then(response => {
-                            if (response.redirected) {
-                                window.location.href = response.url;
+                            if (response.ok) {
+                                // Si la respuesta es OK, redirigir a la página principal
+                                window.location.href = '/index.html';
                             } else {
                                 // Mostrar mensaje de error
                                 alert('Usuario o contraseña incorrectos');
