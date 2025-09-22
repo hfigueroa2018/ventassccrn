@@ -4,7 +4,8 @@
   "description": "Sistema de ventas para Gran Peña CCRN 2025",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "prestart": "npm install"
   },
   "keywords": [
     "ventas",

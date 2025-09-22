@@ -3,7 +3,7 @@ services:
     name: ventassccrn
     env: node
     buildCommand: npm install
-    startCommand: node server.js
+    startCommand: npm start
     repo: https://github.com/hfigueroa2018/ventassccrn
     envVars:
       - key: NODE_VERSION
