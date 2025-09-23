@@ -23,7 +23,7 @@ const PORT = process.env.PORT || 3000;
 let pool;
 if (Pool) {
   pool = new Pool({
-    connectionString: process.env.DATABASE_URL || 'postgresql://localhost:5432/ventassccrn',
+    connectionString: process.env.DATABASE_URL || 'postgresql://localhost:5432/monitor_pro',
     ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false
   });
 }
@@ -179,6 +179,29 @@ const server = http.createServer(async (req, res) => {
       console.log(`Archivo encontrado en minúsculas: ${filePath}`);
     } else {
       console.log(`El archivo no existe ni en minúsculas: ${lowerCasePath}`);
+
+      // Si aún no existe, intentar con diferentes combinaciones de directorios
+      const pathParts = parsedPath.dir.split(path.sep);
+
+      // Convertir "assets" a minúsculas si está en mayúsculas
+      if (pathParts.includes('ASSETS')) {
+        const assetsIndex = pathParts.indexOf('ASSETS');
+        pathParts[assetsIndex] = 'assets';
+
+        // Convertir subdirectorios conocidos a minúsculas
+        if (pathParts.length > assetsIndex + 1) {
+          const subDir = pathParts[assetsIndex + 1];
+          if (subDir.toUpperCase() === 'CSS') pathParts[assetsIndex + 1] = 'css';
+          if (subDir.toUpperCase() === 'JS') pathParts[assetsIndex + 1] = 'js';
+          if (subDir.toUpperCase() === 'IMG') pathParts[assetsIndex + 1] = 'img';
+        }
+
+        const mixedCasePath = path.join(pathParts.join(path.sep), parsedPath.name.toLowerCase() + parsedPath.ext.toLowerCase());
+        if (fs.existsSync(mixedCasePath)) {
+          filePath = mixedCasePath;
+          console.log(`Archivo encontrado con directorios mixtos: ${filePath}`);
+        }
+      }
     }
   }
 

@@ -2,8 +2,8 @@ services:
   - type: web
     name: ventassccrn
     env: node
-    buildCommand: "npm install && npm run prestart"
-    startCommand: "npm start"
+    buildCommand: "npm install --production=false"
+    startCommand: "node server.js"
     repo: https://github.com/hfigueroa2018/ventassccrn
     envVars:
       - key: NODE_VERSION
@@ -12,13 +12,14 @@ services:
         value: 10000
       - key: DATABASE_URL
         fromDatabase:
-          name: ventassccrn-db
+          name: monitor_pro
           property: connectionString
       - key: NPM_CONFIG_PRODUCTION
         value: "false"
 
 databases:
-  - name: ventassccrn-db
-    databaseName: ventassccrn
-    user: ventassccrn_user
+  - name: monitor_pro
+    databaseName: monitor_pro
+    user: monitor_pro_user
     plan: free
+    version: "17"
