@@ -17,15 +17,18 @@ const   $submit = document.getElementById("submit"),
                 if($password.value !== "" && $username.value !== ""){
                         e.preventDefault();
 
-                        // Crear un objeto FormData con las credenciales
-                        const formData = new FormData();
-                        formData.append('username', $username.value);
-                        formData.append('password', $password.value);
+                        // Crear un objeto URLSearchParams con las credenciales
+                        const params = new URLSearchParams();
+                        params.append('username', $username.value);
+                        params.append('password', $password.value);
 
                         // Enviar las credenciales al servidor
                         fetch('/login', {
                             method: 'POST',
-                            body: formData
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                            },
+                            body: params
                         })
                         .then(response => {
                             if (response.ok) {

@@ -82,7 +82,11 @@ async function validateCredentials(username, password) {
   // Si no hay módulos de base de datos, usar autenticación simple
   if (!pool || !bcrypt) {
     console.log('Validación sin base de datos');
-    return username === 'Admin' && password === 'passw4rd2025';
+    console.log('Usuario ingresado:', username);
+    console.log('Contraseña ingresada:', password);
+    const isValid = username === 'Admin' && password === 'passw4rd2025';
+    console.log('¿Credenciales válidas?', isValid);
+    return isValid;
   }
 
   try {
@@ -126,7 +130,7 @@ const server = http.createServer(async (req, res) => {
             'Set-Cookie': 'session=valid; Max-Age=3600; HttpOnly; Path=/'
           });
         } else {
-          res.writeHead(302, { 'Location': '/login.html?error=1' });
+          res.writeHead(302, { 'Location': '/login.html' });
         }
 
         res.end();
