@@ -194,6 +194,18 @@ const server = http.createServer(async (req, res) => {
         filePath = titleCasePath;
       }
     }
+
+    // Si todavía no existe, intentar con directorios en mayúsculas
+    if (!fs.existsSync(filePath)) {
+      // Convertir el directorio a mayúsculas
+      const dir = parsedPath.dir.toUpperCase();
+      const fileName = parsedPath.name;
+      const ext = parsedPath.ext;
+      const upperDirPath = path.join(dir, fileName + ext);
+      if (fs.existsSync(upperDirPath)) {
+        filePath = upperDirPath;
+      }
+    }
   }
 
   // Obtener la extensión del archivo
