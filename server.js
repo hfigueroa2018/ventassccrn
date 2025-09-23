@@ -67,13 +67,19 @@ async function isAuthenticated(req) {
     return acc;
   }, {}) : {};
 
+  console.log('Verificando autenticación:');
+  console.log('- Query parameters:', queryObject);
+  console.log('- Cookies:', cookies);
+
   // Si tiene el parámetro auth=true o una cookie de sesión, verificar si existe una sesión válida
   if (queryObject.auth === 'true' || cookies.session === 'valid') {
+    console.log('Usuario autenticado mediante parámetro o cookie');
     // En una aplicación real, aquí verificarías una sesión o token válido
     // Por ahora, simplemente retornaremos true si el parámetro está presente
     return true;
   }
 
+  console.log('Usuario no autenticado');
   return false;
 }
 
@@ -113,6 +119,7 @@ const server = http.createServer(async (req, res) => {
 
   // Manejar solicitud de login
   if (req.url === '/login' && req.method === 'POST') {
+    console.log('Recibida solicitud de login POST');
     let body = '';
 
     req.on('data', chunk => {
@@ -121,18 +128,23 @@ const server = http.createServer(async (req, res) => {
 
     req.on('end', async () => {
       try {
+        console.log('Procesando datos de login');
         const params = new URLSearchParams(body);
         const username = params.get('username');
         const password = params.get('password');
+        console.log(`Usuario: ${username}, Contraseña: ${password ? '[OCULTA]' : '[VACÍA]'}`);
 
         const isValid = await validateCredentials(username, password);
+        console.log(`Credenciales válidas: ${isValid}`);
 
         if (isValid) {
+          console.log('Estableciendo cookie de sesión y redirigiendo a index.html');
           res.writeHead(302, { 
             'Location': '/index.html',
             'Set-Cookie': 'session=valid; Max-Age=3600; HttpOnly; Path=/'
           });
         } else {
+          console.log('Credenciales inválidas, redirigiendo a login.html');
           res.writeHead(302, { 'Location': '/login.html' });
         }
 
@@ -148,8 +160,12 @@ const server = http.createServer(async (req, res) => {
   }
 
   // Redirigir a login si no está autenticado y no está ya en la página de login
+  console.log(`Verificando autenticación para URL: ${req.url}`);
   if ((req.url === '/' || req.url === '/index.html') && !req.url.includes('auth=true')) {
-    if (!(await isAuthenticated(req))) {
+    const authenticated = await isAuthenticated(req);
+    console.log(`Usuario autenticado: ${authenticated}`);
+    if (!authenticated) {
+      console.log('Redirigiendo a login.html');
       res.writeHead(302, { 'Location': '/login.html' });
       return res.end();
     }
