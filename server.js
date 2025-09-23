@@ -159,113 +159,30 @@ const server = http.createServer(async (req, res) => {
   let filePath;
   if (req.url === '/') {
     filePath = path.join(__dirname, 'index.html');
-  } else if (req.url.startsWith('/assets/')) {
-    // Para los recursos estáticos, asegurarse de que la ruta sea correcta
-    const resourcePath = req.url.substring(1); // Eliminar el '/' inicial
-    filePath = path.join(__dirname, resourcePath);
-    console.log(`Ruta de recurso estático solicitada: ${resourcePath}, ruta completa: ${filePath}`);
   } else {
+    // Para todas las solicitudes, construir la ruta directamente
     filePath = path.join(__dirname, req.url);
   }
 
   console.log(`URL solicitada: ${req.url}, ruta de archivo: ${filePath}`);
 
-  // Manejar rutas con mayúsculas/minúsculas en sistemas sensibles a mayúsculas
+  // Verificar si el archivo existe
   if (!fs.existsSync(filePath)) {
-    // Intentar convertir a minúsculas la extensión
+    console.log(`El archivo no existe: ${filePath}`);
+
+    // Si no existe, intentar con una versión en minúsculas
     const parsedPath = path.parse(filePath);
-    if (parsedPath.ext) {
-      const lowerExtPath = path.join(parsedPath.dir, parsedPath.name + parsedPath.ext.toLowerCase());
-      if (fs.existsSync(lowerExtPath)) {
-        filePath = lowerExtPath;
-      }
-    }
+    const lowerCasePath = path.join(parsedPath.dir, parsedPath.name.toLowerCase() + parsedPath.ext.toLowerCase());
 
-    // Si todavía no existe, intentar con el nombre completo en minúsculas
-    if (!fs.existsSync(filePath)) {
-      const dir = parsedPath.dir;
-      const fileName = parsedPath.name.toLowerCase();
-      const ext = parsedPath.ext.toLowerCase();
-      const lowerCasePath = path.join(dir, fileName + ext);
-      if (fs.existsSync(lowerCasePath)) {
-        filePath = lowerCasePath;
-      }
-    }
-
-    // Si todavía no existe, intentar con el nombre completo en mayúsculas
-    if (!fs.existsSync(filePath)) {
-      const dir = parsedPath.dir;
-      const fileName = parsedPath.name.toUpperCase();
-      const ext = parsedPath.ext.toUpperCase();
-      const upperCasePath = path.join(dir, fileName + ext);
-      if (fs.existsSync(upperCasePath)) {
-        filePath = upperCasePath;
-      }
-    }
-
-    // Si todavía no existe, intentar con la primera letra en mayúscula
-    if (!fs.existsSync(filePath)) {
-      const dir = parsedPath.dir;
-      const fileName = parsedPath.name.charAt(0).toUpperCase() + parsedPath.name.slice(1).toLowerCase();
-      const ext = parsedPath.ext.charAt(0).toUpperCase() + parsedPath.ext.slice(1).toLowerCase();
-      const titleCasePath = path.join(dir, fileName + ext);
-      if (fs.existsSync(titleCasePath)) {
-        filePath = titleCasePath;
-      }
-    }
-
-    // Si todavía no existe, intentar con directorios en mayúsculas
-    if (!fs.existsSync(filePath)) {
-      // Convertir el directorio a mayúsculas
-      const dir = parsedPath.dir.toUpperCase();
-      const fileName = parsedPath.name;
-      const ext = parsedPath.ext;
-      const upperDirPath = path.join(dir, fileName + ext);
-      if (fs.existsSync(upperDirPath)) {
-        filePath = upperDirPath;
-      }
-    }
-
-    // Si todavía no existe, intentar con directorios en minúsculas
-    if (!fs.existsSync(filePath)) {
-      // Convertir los directorios a minúsculas
-      const pathParts = parsedPath.dir.split(path.sep);
-      const lowerCaseParts = pathParts.map(part => part.toLowerCase());
-      const lowerCaseDir = lowerCaseParts.join(path.sep);
-      const fileName = parsedPath.name;
-      const ext = parsedPath.ext;
-      const lowerCaseDirPath = path.join(lowerCaseDir, fileName + ext);
-      if (fs.existsSync(lowerCaseDirPath)) {
-        filePath = lowerCaseDirPath;
-      }
-    }
-
-    // Si todavía no existe, intentar con directorios mixtos (assets/IMG, assets/CSS, etc.)
-    if (!fs.existsSync(filePath)) {
-      // Manejar casos específicos de directorios con mayúsculas
-      const pathParts = parsedPath.dir.split(path.sep);
-
-      // Convertir "assets" a minúsculas si está en mayúsculas
-      if (pathParts[0] && pathParts[0].toUpperCase() === 'ASSETS') {
-        pathParts[0] = 'assets';
-      }
-
-      // Convertir subdirectorios conocidos a minúsculas
-      if (pathParts[1]) {
-        if (pathParts[1].toUpperCase() === 'CSS') pathParts[1] = 'css';
-        if (pathParts[1].toUpperCase() === 'JS') pathParts[1] = 'js';
-        if (pathParts[1].toUpperCase() === 'IMG') pathParts[1] = 'img';
-      }
-
-      const mixedCaseDir = pathParts.join(path.sep);
-      const fileName = parsedPath.name;
-      const ext = parsedPath.ext;
-      const mixedCasePath = path.join(mixedCaseDir, fileName + ext);
-      if (fs.existsSync(mixedCasePath)) {
-        filePath = mixedCasePath;
-      }
+    if (fs.existsSync(lowerCasePath)) {
+      filePath = lowerCasePath;
+      console.log(`Archivo encontrado en minúsculas: ${filePath}`);
+    } else {
+      console.log(`El archivo no existe ni en minúsculas: ${lowerCasePath}`);
     }
   }
+
+  // La lógica de manejo de mayúsculas/minúsculas se ha simplificado y movido arriba
 
   // Obtener la extensión del archivo
   const extname = path.extname(filePath).toLowerCase();
