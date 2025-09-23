@@ -108,6 +108,9 @@ async function validateCredentials(username, password) {
 
 // Crear el servidor
 const server = http.createServer(async (req, res) => {
+  // Registrar la URL solicitada para depuración
+  console.log(`URL solicitada: ${req.url}`);
+
   // Manejar solicitud de login
   if (req.url === '/login' && req.method === 'POST') {
     let body = '';
@@ -284,16 +287,20 @@ const server = http.createServer(async (req, res) => {
   }
 
   // Leer el archivo
+  console.log(`Intentando servir archivo: ${filePath}`);
   fs.readFile(filePath, (err, content) => {
     if (err) {
+      console.log(`Error al leer archivo: ${err.code}`);
       if (err.code === 'ENOENT') {
         // Archivo no encontrado
+        console.log(`Archivo no encontrado, mostrando página 404`);
         fs.readFile(path.join(__dirname, '404.html'), (err, content) => {
           res.writeHead(404, { 'Content-Type': 'text/html' });
           res.end(content, 'utf8');
         });
       } else {
         // Error del servidor
+        console.log(`Error del servidor: ${err.code}`);
         res.writeHead(500);
         res.end(`Error del servidor: ${err.code}`);
       }
