@@ -156,7 +156,19 @@ const server = http.createServer(async (req, res) => {
   }
 
   // Construir la ruta del archivo solicitado
-  let filePath = path.join(__dirname, req.url === '/' ? 'index.html' : req.url);
+  let filePath;
+  if (req.url === '/') {
+    filePath = path.join(__dirname, 'index.html');
+  } else if (req.url.startsWith('/assets/')) {
+    // Para los recursos estáticos, asegurarse de que la ruta sea correcta
+    const resourcePath = req.url.substring(1); // Eliminar el '/' inicial
+    filePath = path.join(__dirname, resourcePath);
+    console.log(`Ruta de recurso estático solicitada: ${resourcePath}, ruta completa: ${filePath}`);
+  } else {
+    filePath = path.join(__dirname, req.url);
+  }
+
+  console.log(`URL solicitada: ${req.url}, ruta de archivo: ${filePath}`);
 
   // Manejar rutas con mayúsculas/minúsculas en sistemas sensibles a mayúsculas
   if (!fs.existsSync(filePath)) {
