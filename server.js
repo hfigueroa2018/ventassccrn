@@ -306,8 +306,16 @@ const server = http.createServer(async (req, res) => {
       }
     } else {
       // Respuesta exitosa
-      res.writeHead(200, { 'Content-Type': contentType });
-      res.end(content, 'utf8');
+      console.log(`Sirviendo archivo: ${filePath} con tipo de contenido: ${contentType}`);
+
+      // Para imágenes, no usar 'utf8'
+      if (contentType.startsWith('image/')) {
+        res.writeHead(200, { 'Content-Type': contentType });
+        res.end(content);
+      } else {
+        res.writeHead(200, { 'Content-Type': contentType });
+        res.end(content, 'utf8');
+      }
     }
   });
 });
