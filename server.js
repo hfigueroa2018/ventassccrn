@@ -210,6 +210,46 @@ const server = http.createServer(async (req, res) => {
         filePath = upperDirPath;
       }
     }
+
+    // Si todavía no existe, intentar con directorios en minúsculas
+    if (!fs.existsSync(filePath)) {
+      // Convertir los directorios a minúsculas
+      const pathParts = parsedPath.dir.split(path.sep);
+      const lowerCaseParts = pathParts.map(part => part.toLowerCase());
+      const lowerCaseDir = lowerCaseParts.join(path.sep);
+      const fileName = parsedPath.name;
+      const ext = parsedPath.ext;
+      const lowerCaseDirPath = path.join(lowerCaseDir, fileName + ext);
+      if (fs.existsSync(lowerCaseDirPath)) {
+        filePath = lowerCaseDirPath;
+      }
+    }
+
+    // Si todavía no existe, intentar con directorios mixtos (assets/IMG, assets/CSS, etc.)
+    if (!fs.existsSync(filePath)) {
+      // Manejar casos específicos de directorios con mayúsculas
+      const pathParts = parsedPath.dir.split(path.sep);
+
+      // Convertir "assets" a minúsculas si está en mayúsculas
+      if (pathParts[0] && pathParts[0].toUpperCase() === 'ASSETS') {
+        pathParts[0] = 'assets';
+      }
+
+      // Convertir subdirectorios conocidos a minúsculas
+      if (pathParts[1]) {
+        if (pathParts[1].toUpperCase() === 'CSS') pathParts[1] = 'css';
+        if (pathParts[1].toUpperCase() === 'JS') pathParts[1] = 'js';
+        if (pathParts[1].toUpperCase() === 'IMG') pathParts[1] = 'img';
+      }
+
+      const mixedCaseDir = pathParts.join(path.sep);
+      const fileName = parsedPath.name;
+      const ext = parsedPath.ext;
+      const mixedCasePath = path.join(mixedCaseDir, fileName + ext);
+      if (fs.existsSync(mixedCasePath)) {
+        filePath = mixedCasePath;
+      }
+    }
   }
 
   // Obtener la extensión del archivo
